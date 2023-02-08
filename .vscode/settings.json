@@ -1,0 +1,7 @@
+{
+  "pylint.args": [
+    "--disable=C0111",
+    "--disable=C0304",
+  ],
+  "python.linting.enabled": true
+}
