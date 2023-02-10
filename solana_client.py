@@ -1,4 +1,4 @@
-from typing import Sequence, Any, Tuple
+from typing import Sequence, Any, Tuple, List
 from solders.instruction import AccountMeta, Instruction
 from solders.pubkey import Pubkey
 from solders.keypair import Keypair
@@ -15,22 +15,15 @@ class SolanaClient:
         self.rpc_client = rpc_client
         self.signer = signer
 
-    def call_program(self, program_id: Pubkey, data: Any, accounts: Sequence[AccountMeta]):
-
-        from_pubkey = Pubkey.from_string(
-            "6ZWcsUiWJ63awprYmbZgBQSreqYZ4s6opowP4b7boUdh")
-        user_pubkey = Pubkey.from_string(
-            "6ZWcsUiWJ63awprYmbZgBQSreqYZ4s6opowP4b7boUdh")
-        program_id = "program-id"
-        accounts = [AccountMeta(from_pubkey, is_signer=True, is_writable=True),
-                    AccountMeta(user_pubkey, is_signer=False, is_writable=True)]
-        data = [{"to": user_pubkey, "amount": 100}]
-        instruction = Instruction(program_id, bytes(data), accounts)
+    def call_program(self, instruction):
         txn = Transaction().add(instruction)
 
-        base58_str = "1" * 64
-        self.rpc_client.send_transaction(
-            txn, Keypair.from_base58_string(base58_str))
+        try:
+            self.rpc_client.send_transaction(txn, self.signer)
+        except SolanaExceptionBase as exc:
+            print(exc.error_msg)
+        except RPCException as exc:
+            print(exc)
 
     def transfer_lamports(self, sender: Pubkey, receiver: Pubkey, amount: int):
         instruction = transfer(
