@@ -1,8 +1,7 @@
-from typing import Sequence, Any, Tuple, List
-from solders.instruction import AccountMeta, Instruction
+from typing import Sequence, Tuple
 from solders.pubkey import Pubkey
 from solders.keypair import Keypair
-from solders.system_program import transfer, transfer_many, TransferParams
+from solders.system_program import transfer, TransferParams
 from solana.transaction import Transaction
 from solana.rpc.api import Client
 from solana.exceptions import SolanaExceptionBase
@@ -20,10 +19,12 @@ class SolanaClient:
 
         try:
             self.rpc_client.send_transaction(txn, self.signer)
+            return True
         except SolanaExceptionBase as exc:
             print(exc.error_msg)
         except RPCException as exc:
             print(exc)
+        return False
 
     def transfer_lamports(self, sender: Pubkey, receiver: Pubkey, amount: int):
         instruction = transfer(

@@ -1,4 +1,7 @@
-from solders.pubkey import Pubkey
+import os
+from dotenv import load_dotenv
+
+load_dotenv()
 
 RPC_URL = {
     "mainnet": "https://rpc.ankr.com/solana",
@@ -6,4 +9,5 @@ RPC_URL = {
     "devnet": "https://rpc.ankr.com/solana_devnet",
     "localhost": "http://localhost:8899"
 }
-PROGRAM_ID = Pubkey.from_string("9tAYkfZfaJ1bVNTVXNPPxABBii9nghEK9W25T7igmMFX")
+
+SECRET_KEY = os.getenv("SECRET_KEY")
