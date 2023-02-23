@@ -54,7 +54,7 @@ def main(func: Func, cluster: Cluster, params):
         client.transfer_lamports(
             signer.pubkey(), Pubkey.from_string(params['receiver']), params['amount'])
     elif func == Func.TRANSFER_MANY:
-        receivers = [Pubkey.from_string(r) for r in receivers]
+        receivers = [Pubkey.from_string(r) for r in params['receiver']]
         client.transfer_many_lamports(
             signer.pubkey(), [(rec, params['amount']) for rec in receivers])
     elif func == Func.INITIALIZE:
